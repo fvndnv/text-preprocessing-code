@@ -1,0 +1,27 @@
+#Abbrevations and Words correction
+def clean_text(text):
+    text = text.lower()
+    text = text.strip()
+    text = re.sub(r' +', ' ', text)
+    text = re.sub(r"[-()\"#/@;:{}`+=~|.!?,'0-9]", "", text)
+    return(text)
+
+import string
+def pre_process(text):
+    text = text.str.replace('/','')                           #Replacing the / with none
+    text = text.apply(lambda x: re.sub("  "," ", x))          #Replacing double space with single space
+    text = re.sub(r"[-()\"#/@;:{}`+=~|.!?,']", "", text)      #Replacing special character with none
+    text = re.sub(r'[0-9]+', '', text)                        #Replacing numbers with none
+    #text = text.apply(lambda x: " ".join(x.translate(str.maketrans('', '', string.punctuation)) for x in x.split() if x.isalpha()))
+    text = text.apply(lambda x: " ".join(x for x in x.split() if x not in stop)) #Removing stop words
+    #text = text.apply(lambda x: str(TextBlob(x).correct()))                      #Correct spelling corrections
+    #text = text.apply(lambda x: " ".join(PorterStemmer().stem(word) for word in x.split())) #Stemming using porter stemmer
+    #text = text.apply(lambda x: " ".join(stemmer_func(word) for word in x.split()))        #Stemming
+    #text = text.apply(lambda x: " ".join([Word(word).lemmatize() for word in x.split()]))   #lemmatization
+    #text = text.apply(lambda x: " ".join(word for word, pos in pos_tag(x.split()) if pos not in ['NN','NNS','NNP','NNPS'])) #Removing nouns etc
+    return(text)
+
+
+train = train.apply(lambda x: clean_text(x))
+
+train=pre_process(train)
